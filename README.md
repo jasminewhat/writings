@@ -1,7 +1,8 @@
 # 🍊 What? — A Poetry Archive
 
 > *"A way to remember the moments you wanted to forget."*
-> View it here: https://jasminewhat.github.io/writings/
+
+View it here: https://jasminewhat.github.io/writings/
 
 Welcome to my personal poetry archive. This is a cleanly designed, single-page web application featuring an automated index layout styled in a warm, cohesive **Creamsicle & Dreamsicle** color palette. 
 
