@@ -26,11 +26,11 @@ To add a new entry to the archive, you do not need to touch the JavaScript or th
 ### Blank Template Block:
 
 ```html
-<article class="poem" id="poem-UNIQUE_NUMBER" data-date="YYYY-MM-DD">
-    <h2 class="poem-title">Poem Title Here</h2>
-    <div class="poem-meta">Month DD, YYYY</div>
-    <p class="poem-body">First line of the poem.
-    Second line of the poem.
-    
-    New stanza line here.</p>
+
+<article class="poem" id="poem-UNIQUE_NUMBER" data-date="YYYY-MM-DD-HH:MM">
+            <h2 class="poem-title">Poem Title Here</h2>
+            <div class="poem-meta">Month DD, YYYY <span class="poem-time">• HH:MM AM/PM</span></div>
+            <p class="poem-body">First line...
+            Second line...
+            </p>
 </article>

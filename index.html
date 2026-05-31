@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Poetry Archive</title>
     <style>
-/* Global Styles & Color Palette (Creamsicle Dreamsicle Blend) */
-body {
+        /* Global Styles & Color Palette (Creamsicle Dreamsicle Blend) */
+        body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #ffdcb5; /* Dreamsicle - Soft, warm pastel orange backdrop */
             color: #5e3311;            /* Warm Espresso - Deep orange-brown ink for perfect blend and contrast */
@@ -77,6 +77,24 @@ body {
             scrollbar-width: thin;
             scrollbar-color: #e06c26 transparent;
         }
+
+        .toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            
+            /* Limits the list height to exactly 7 items (~266px) */
+            max-height: 250px; 
+            overflow-y: auto; /* Shows the scrollbar automatically on the 8th item */
+            padding-right: 5px; /* Adds a tiny bit of breathing room for the scrollbar */
+
+            /* Optional: Keeps the custom thin creamsicle scrollbar track */
+            scrollbar-width: thick;
+            scrollbar-color: #e06c26 transparent;
+        }
+
         .toc-header-wrapper {
             margin-bottom: 15px;
         }
@@ -105,6 +123,33 @@ body {
             font-family: inherit;
             font-size: 0.8rem;
             text-decoration: underline;
+        }
+
+        /* Show All Button Specific Styling */
+        #show-all-btn {
+            background-color: #bd5c20; /* Deep orange ink */
+            color: #fffaf2;            /* Whipped cream white text */
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-left: 10px;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+            opacity: 0.5; /* Dimmed by default unless active */
+        }
+
+        #show-all-btn:hover {
+            background-color: #5e3311; /* Warm espresso brown hover state */
+            opacity: 0.9;
+        }
+
+        #show-all-btn.active {
+            opacity: 1; /* Fully bright when looking at the entire archive */
+            cursor: default;
+            background-color: #e06c26; /* Bright Creamsicle Orange */
         }
 
         .sort-btn.active {
@@ -175,6 +220,13 @@ body {
             font-weight: 600;
         }
 
+        .poem-time {
+            opacity: 0.75;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
         .poem-body {
             font-family: "Georgia", serif;
             font-size: 1.2rem;
@@ -223,11 +275,13 @@ body {
         
         <nav class="toc-sidebar">
             <div class="toc-header-wrapper">
-                <div class="toc-title">Index of Poems</div>
+                <div class="toc-title">Circa</div>
                 <div class="sort-controls">
                     Sort: 
                     <button class="sort-btn active" id="sort-newest" onclick="sortArchive('newest')">Newest</button> | 
                     <button class="sort-btn" id="sort-oldest" onclick="sortArchive('oldest')">Oldest</button>
+                    <!-- ADD THIS BUTTON RIGHT HERE: -->
+                    <button id="show-all-btn" onclick="handleShowAll()">Show All</button>
                 </div>
             </div>
             <!-- The list items below are generated completely automatically on page load -->
@@ -236,8 +290,8 @@ body {
 
         <main>
             <header>
-                <h1>What?</h1>
-                <p>A way to remember the moments you wanted to forget.</p>
+                <h1>Treasure Box</h1>
+                <p>A way to remember the emotions you once wanted to forget.</p>
                 <hr>
             </header>
 
@@ -250,9 +304,9 @@ body {
                   If multiple poems have the same date, add a suffix like -1, -2 to keep your preferred order.
                 -->
 
-                <article class="poem" id="poem-6" data-date="2017-12-25">
+                <article class="poem" id="poem-granite" data-date="2016-02-10-16:41">
                     <h2 class="poem-title">Granite</h2>
-                    <div class="poem-meta">December 25, 2017</div>
+                    <div class="poem-meta">February 10, 2016 <span class="poem-time">• 4:41 PM</span></div>
                     <p class="poem-body">Granted, you are taken for. 
                     But you've been granted, nothing more.</p>
                 </article>
@@ -266,9 +320,9 @@ body {
                     What does one actually own? Nothing but his ego.</p>
                 </article>
 
-                <article class="poem" id="poem-1" data-date="2014-05-12-1">
+                <article class="poem" id="poem-sail" data-date="2014-05-12-1-20:41">
                     <h2 class="poem-title">Sail (Revised)</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:41 PM</span></div>
                     <p class="poem-body">i left this morning without word.
                     i left as quietly as i could, without a sound being heard.
                     you looked so peaceful as you slept in your bed.
@@ -282,9 +336,9 @@ body {
                     i'll just keep to myself so i don't get hung.</p>
                 </article>
 
-                <article class="poem" id="poem-2" data-date="2014-05-12-2">
+                <article class="poem" id="poem-swim" data-date="2014-05-12-20:40">
                     <h2 class="poem-title">Swim (Revised)</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:40 PM</span></div>
                     <p class="poem-body">You were a pool of water. I stepped my foot in to feel the temp and felt my entire body rush with a sensation I longed to get again. 
                     
                     I took another step into the dark waters and fell over and into you. Instead of drying off, I sat paddling to stay afloat. You've nearly drown me in your current. Each time, I forgave you and I continued my swim. 
@@ -295,10 +349,10 @@ body {
                     
                     Instead of drying off and trying a different pool who could span so much wider than you, I was content with you.</p>
                 </article>
-
-                <article class="poem" id="poem-3" data-date="2014-05-12-3">
+<!--
+                <article class="poem" id="poem-lust" data-date="2014-05-12-20:40">
                     <h2 class="poem-title">Lust (Revised)</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:40 PM</span></div>
                     <p class="poem-body">turn on a movie, you know what that means.
                     volume up, lay down, loosen up jeans.
                     relax now, keep your mind on the prize.
@@ -321,114 +375,488 @@ body {
                     one kiss on the lips, now its all done.
                     you're inside now, the teasing was fun.</p>
                 </article>
-
-                <article class="poem" id="poem-4" data-date="2014-05-12-4">
+-->
+                <article class="poem" id="poem-bff" data-date="2014-05-12-20:37">
                     <h2 class="poem-title">BFF</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:37 PM</span></div>
                     <p class="poem-body">If you can fall in love with your best friend, then believe me, I did.
-                        If their heart was up for auction, I'd be the highest bid.
+                    
+                    If their heart was up for auction, I'd be the highest bid.
                     </p>
                 </article>
 
-                <article class="poem" id="poem-7" data-date="2014-05-12-7">
+                <article class="poem" id="poem-shine" data-date="2014-05-12-20:37">
                     <h2 class="poem-title">Shine (Revised)</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:37 PM</span></div>
                     <p class="poem-body">i was myself, nothing less when you're around.
-                        you were my pick me up when all those people kicked me to the ground. 
-                        hugging you would remove every bit of gloom. 
-                        we were so close improvement had no room. 
-                        perfect is all you were and all you could be. 
-                        your smile was the brightest thing my rainy days longed to see. 
-                        life isn't bad because i know you're near.
-                        a text or a call. your voice. my favorite thing to hear. 
-                        you say my name like a vocalist sings a song.
-                        as long as i have your love nothing can go wrong.
+                    you were my pick me up when all those people kicked me to the ground. 
+                    hugging you would remove every bit of gloom. 
+                    we were so close improvement had no room. 
+                    perfect is all you were and all you could be. 
+                    your smile was the brightest thing my rainy days longed to see. 
+                    life isn't bad because i know you're near.
+                    a text or a call. your voice. my favorite thing to hear. 
+                    you say my name like a vocalist sings a song.
+                    as long as i have your love nothing can go wrong.
                     </p>
                 </article>
 
-                <article class="poem" id="poem-8" data-date="2014-05-12-8">
+                <article class="poem" id="poem-vixen" data-date="2014-05-12-20:37">
                     <h2 class="poem-title">Vixen</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:37 PM</span></div>
                     <p class="poem-body">she's a vixen. its the look in her eyes. 
-                        the way the light hits it, she'll have you hypnotized. 
-                        she's the devil, in that red dress she's in. 
-                        touch her body once, she'll have you committing every sin. 
-                        she's a murderer. the way she kills your heart. 
-                        you'll want to bury yourself cause from her you can't seem to part. 
-                        she's an angel. her soft voice is oh so sweet. 
-                        you'll be entranced from the day you meet. 
-                        how can evil be so good? 
-                        she just sits on your bed with all intentions misunderstood. 
-                        you don't realize, she's done all she could, 
-                        to get herself to this position doing things she'd imagined she never would.
+                    the way the light hits it, she'll have you hypnotized. 
+                    she's the devil, in that red dress she's in. 
+                    touch her body once, she'll have you committing every sin. 
+                    she's a murderer. the way she kills your heart. 
+                    you'll want to bury yourself cause from her you can't seem to part. 
+                    she's an angel. her soft voice is oh so sweet. 
+                    you'll be entranced from the day you meet. 
+                    how can evil be so good? 
+                    she just sits on your bed with all intentions misunderstood. 
+                    you don't realize, she's done all she could, 
+                    to get herself to this position doing things she'd imagined she never would.
                     </p>
                 </article>
 
-                <article class="poem" id="poem-9" data-date="2014-05-12-9">
+                <article class="poem" id="poem-views" data-date="2014-05-12-20:37">
                     <h2 class="poem-title">Views</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:37 PM</span></div>
                     <p class="poem-body">i don't need a beautiful view, as long as i'm waking up next to you. 
-                        the most beautiful thing i could ever see was lying down right beside me.
+                    the most beautiful thing i could ever see was lying down right beside me.
                     </p>
                 </article>
 
-                <article class="poem" id="poem-9" data-date="2014-05-12-9">
-                    <h2 class="poem-title">Views</h2>
-                    <div class="poem-meta">May 12, 2014</div>
-                    <p class="poem-body">i don't need a beautiful view, as long as i'm waking up next to you. 
-                        the most beautiful thing i could ever see was lying down right beside me.
-                    </p>
-                </article>
-
-                <article class="poem" id="poem-10" data-date="2014-05-12-10">
+                <article class="poem" id="poem-abandoned" data-date="2014-05-12-20:36">
                     <h2 class="poem-title">Abandoned Things</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:36 PM</span></div>
                     <p class="poem-body">abandoned things become beautiful by what starts to grow around them. 
                         
-                        that's all i hope for.
+                    that's all i hope for.
                     </p>
                 </article>   
 
-                <article class="poem" id="poem-11" data-date="2014-05-12-11">
+                <article class="poem" id="poem-paint" data-date="2014-05-12-20:36">
                     <h2 class="poem-title">Paint</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:36 PM</span></div>
                     <p class="poem-body">we are young and we want love. 
-                        we want someone who can learn the curves of our body 
-                        and appreciate every arch 
-                        so that when asked about us, they can paint a mental silhouette that's almost perfect, 
-                        but not perfect enough to explain the complete perfection of how each curve is a significant turn of the body. 
-                        we want someone who can look at us as we talk and in mid conversation, 
-                        smile because we know that we are so into each other that its completely unbelievable.
+                    we want someone who can learn the curves of our body 
+                    and appreciate every arch 
+                    so that when asked about us, they can paint a mental silhouette that's almost perfect, 
+                    but not perfect enough to explain the complete perfection of how each curve is a significant turn of the body. 
+                    we want someone who can look at us as we talk and in mid conversation, 
+                    smile because we know that we are so into each other that its completely unbelievable.
                     </p>
                 </article>
 
-                <article class="poem" id="poem-11" data-date="2014-05-12-11">
+                <article class="poem" id="poem-encounter" data-date="2014-05-12-20:35">
                     <h2 class="poem-title">Random Encounter</h2>
-                    <div class="poem-meta">May 12, 2014</div>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:35 PM</span></div>
                     <p class="poem-body">random encounters, once in awhile. 
-                        this happens all the time like a convict on trial. 
-                        being stuck like this isn't my style, but when I see you all i do is smile. 
-                        i thought all the time avoiding you was worthwhile, but really all my feelings are just becoming a pile. 
-                        you must have got my heart put away in a file, because now you'll run through my head for more than a mile. 
-                        i don't want to be so hostile, but in my phone book of love, you're on speed dial. 
-                        i can't be lost in you anymore like i'm on a department store aisle.
+                    this happens all the time like a convict on trial. 
+                    being stuck like this isn't my style, but when I see you all i do is smile. 
+                    i thought all the time avoiding you was worthwhile, but really all my feelings are just becoming a pile. 
+                    you must have got my heart put away in a file, because now you'll run through my head for more than a mile. 
+                    i don't want to be so hostile, but in my phone book of love, you're on speed dial. 
+                    i can't be lost in you anymore like i'm on a department store aisle.
                     </p>
                 </article>                 
 
-                <article class="poem" id="poem-1" data-date="2013-08-24">
+                <article class="poem" id="poem-again" data-date="2013-08-24-20:34">
                     <h2 class="poem-title">Again</h2>
-                    <div class="poem-meta">August 24, 2013</div>
+                    <div class="poem-meta">August 24, 2013 <span class="poem-time">• 8:34 PM</span></div>
                     <p class="poem-body">Last night was the first time we fully exposed ourselves. 
-                        Stripped down to the bare, your soul shined. 
-                        You missed me, I could tell by the way you kissed me. 
-                        By the way you playfully laughed at each remark, there was nothing but genuine smiles and vibes. 
-                        It was as if the world didn't matter, but we were back to normal. 
-                        Your hair wrapped in my fingers as you wrap yourself around me. 
-                        Wrapped in each other, we unraveled and resurfaced our anchored feelings. 
-                        Will this ship remain docked or finally set sail.
+                    Stripped down to the bare, your soul shined. 
+                    You missed me, I could tell by the way you kissed me. 
+                    By the way you playfully laughed at each remark, there was nothing but genuine smiles and vibes. 
+                    It was as if the world didn't matter, but we were back to normal. 
+                    Your hair wrapped in my fingers as you wrap yourself around me. 
+                    Wrapped in each other, we unraveled and resurfaced our anchored feelings. 
+                    Will this ship remain docked or finally set sail.
                     </p>
                 </article>                 
                 
+                <article class="poem" id="poem-sprinkles" data-date="2014-05-12-20:34">
+                    <h2 class="poem-title">Sprinkles</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:34 PM</span></div>
+                    <p class="poem-body">Sitting up, 3:00am. Why are we awake?
+                    Your hugging me so tightly I can hardly breath. 
+                    You're not close enough, you said. 
+                    We were so close that we might as well have been one person. 
+                    I felt your entire body melt into mine and your heart beat slowed down to a pace of comfort. 
+                    We were so relaxed into our position that we could've stayed there forever. 
+                    One kiss, two kiss. I kiss, you kiss. 
+                    My heart sprinkles into your hands. 
+                    You're the sweetest thing and I just hope you felt this too.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-playing" data-date="2014-04-26-21:15">
+                    <h2 class="poem-title">Playing (Revised)</h2>
+                    <div class="poem-meta">April 26, 2014 <span class="poem-time">• 9:15 PM</span></div>
+                    <p class="poem-body">As we sat around 
+                    so comfortably there
+                    I wonder
+                    was my emotions you played with
+                    Or was it really just my hair
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-warmth" data-date="2014-05-12-20:34">
+                    <h2 class="poem-title">Warmth</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:34 PM</span></div>
+                    <p class="poem-body">As your hair falls through the crevices of fingers, I feel my heart warm. 
+                    My thoughts become soft and my stomach gets a little fluttered. 
+                    You're next to me now and your hands are caressing ever so gently. 
+                    I like you and despite what anyone says, you're the one I'm feening for.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-knots" data-date="2013-04-01-03:38">
+                    <h2 class="poem-title">Knots</h2>
+                    <div class="poem-meta">April 1, 2013 <span class="poem-time">• 3:38 AM</span></div>
+                    <p class="poem-body">The knot was tied before the string constricted to the formation of your finger. Slowly the knot loosens, but its efforts are failed as it is tightened when your fingers run over the skin's surface. Some people tie knots around their finger to remember something, maybe that was the initial intention that took a wrong loop. Instead of being pulled over, it was pulled under and restrained in the final position.
+                    </p>
+                </article>         
+                
+                <article class="poem" id="poem-top-off" data-date="2013-03-25-02:01">
+                    <h2 class="poem-title">Top Off (Revised)</h2>
+                    <div class="poem-meta">March 25, 2013 <span class="poem-time">• 2:01 AM</span></div>
+                    <p class="poem-body">I slide my fingers underneath your top to feel your back muscles flexing. 
+                    I signal for you to remove it. 
+                    You lift up.
+                    With the removal of your top, you've taken my highest thought of you.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-sequence" data-date="2014-05-12-20:30">
+                    <h2 class="poem-title">Sequence (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:30 PM</span></div>
+                    <p class="poem-body">I went first. 
+                    Awaited your arrival. Alone, I'm tucked under your blanket and nestled into your pillow. 
+                    It was cold, but you came second. 
+                    I felt the warmth of your fingers slide across my back and make way to my stomach. 
+                    Under my arm and then I felt your fingers fit in between each of mine. 
+                    Closer. I am pulled to your chest. The strength of your arm has me closer to you than I imagined I would be. 
+                    No sounds, other than our breathing our heard. 
+                    Our slumber comes third. 
+                    Easily, we fall asleep only to be awakened in a few hours. 
+                    The sun slithers in fourth. 
+                    It is then that your fingers unravel from mine and your body is now at a distance. 
+                    I went first. 
+                    Before I left, I matched your lips to mine.
+                    I slipped away only to wonder if these nights are anything to you, as they are to me.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-wyd" data-date="2014-05-12-20:29">
+                    <h2 class="poem-title">What are you doing?</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:29 PM</span></div>
+                    <p class="poem-body">Bedroom eyes, fingers in my thighs. Smooth kisses. Whispering wishes. 
+                    Baby, what are you doing? 
+                    Fingertips inside, pleasurable pain. Pleasing ride, sexual stain. 
+                    Baby, what are you doing? 
+                    Sinking into bed, sheets on the floor. The mattress springs squeaking, knocking of the headboard. 
+                    Baby, what are you doing? 
+                    Heavy breaths. Pounding chest. 
+                    Baby, what are you doing? 
+                    Slipped on jeans, tear filled screams. 
+                    Baby, what are you doing? 
+                    Jingling keys, no love for me. 
+                    Baby, what are you doing? 
+                    Out the door, knees on the floor. Heart so sore, just like before. 
+                    Baby, what are you doing? 
+                    I laid a bet in a one night stand, and I was left with an empty hand. 
+                    You're not my baby, so what am I doing?
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-lossed" data-date="2014-05-12-20:28">
+                    <h2 class="poem-title">Lossed</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:28 PM</span></div>
+                    <p class="poem-body">Every line, you crossed. 
+                    Every feeling, you tossed. 
+                    All your words, embossed. 
+                    And all my care? Lost.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-nightstand" data-date="2014-05-12-20:28">
+                    <h2 class="poem-title">One Night Stand (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014 <span class="poem-time">• 8:28 PM</span></div>
+                    <p class="poem-body">As you ease inside, you feel the moisture of my deepest Feelings on your skin. 
+                    In and out, thrusting, as you've been into my life. 
+                    Ooooooooouuuuh. You're so good. 
+                    Don't stop, I pant. 
+                    Don't go, I cry. 
+                    You're here right now. 
+                    Your mouth on my neck, as your teeth sink in gently. 
+                    Hard-er, I whisper. 
+                    You can feel the breathe of each letter breeze across your ear. 
+                    You bite. 
+                    I feel all the animosity and the pierce of all your words strike my skin like a dagger to the heart. 
+                    I scream of pleasure. 
+                    Letting all I've had for you escape with your actions. 
+                    
+                    Change. 
+                    
+                    You've got control. Hit from behind because I didn't see you coming, but you did. 
+                    And when you did, I came too. 
+                    You came to your climax and I to my senses. 
+                    With your semen out, I saw men. 
+                    Men who would never do the things you had done... 
+                    released. 
+                    We let go. No more of either of us for each. 
+                    
+                    One night stands as our only reminder of what we were to each other... nothing.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-geometry" data-date="YYYY-MM-DD-HH:MM">
+                    <h2 class="poem-title">Geometry</h2>
+                    <div class="poem-meta">September 18, 2020 <span class="poem-time">• 6:49 PM</span></div>
+                    <p class="poem-body">The circumference and volume of my entire body is only known by you. 
+                    
+                    You know this shirt well. You passed the surface area, intruded the perimeter, and felt the area. Pleasurable every moment. 
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-insane" data-date="2019-03-25-22:18">
+                    <h2 class="poem-title">Insane</h2>
+                    <div class="poem-meta">March 25, 2019 <span class="poem-time">• 10:18 PM</span></div>
+                    <p class="poem-body">i really still love my ex boyfriend
+
+                    and it's probably because i'm insane
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-empty" data-date="2018-10-18-00:11">
+                    <h2 class="poem-title">Empty</h2>
+                    <div class="poem-meta">October 18, 2018 <span class="poem-time">• 12:11 AM</span></div>
+                    <p class="poem-body">You smoked cigarettes, put them out on my soul.
+                    
+                    I'm a bottle you've shattered, no longer whole.
+                    
+                    I'm the food that you waste, hoarded with greed.
+                    
+                    I'm a flower in drought, you're the rain that I need...to drown in.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-inadequate" data-date="2018-10-11-18:58">
+                    <h2 class="poem-title">Inadequacy</h2>
+                    <div class="poem-meta">October 11, 2018 <span class="poem-time">• 6:58 PM</span></div>
+                    <p class="poem-body">An additive just to fill up the empty space that all I had to offer couldn’t fill. 
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-patience" data-date="2018-10-11-18:55">
+                    <h2 class="poem-title">Patience</h2>
+                    <div class="poem-meta">October 11, 2018 <span class="poem-time">• 6:55 PM</span></div>
+                    <p class="poem-body">As a patient of patience, I sit in the waiting room. 
+                    When will it be my turn? I’m ready now. 
+                    An impatient inpatient at this forceful facility. 
+                    Is it over yet? 
+                    I’m ready to go.  
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-beginning" data-date="2012-11-13-00:00">
+                    <h2 class="poem-title">Beginning</h2>
+                    <div class="poem-meta">November 13, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">I ripped out two pages of this notebook, but you probably couldn't tell. That's almost like me, I smile through all the hell. Ripped apart and set down to be forgotten and misused. We've all been there at least once, I figure its a common fuse. People don't notice though, when it is your fuse that has been lit. Even when they're going through the exact same shit.
+
+                    But if you ask me, say "Are you okay?"
+                    I'll give you a subtle response that says, "Later today."
+                    Take that how you please, but I won't tread on being sad. I have been there before, and don't want to go back.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-heavy" data-date="2012-11-13-00:01">
+                    <h2 class="poem-title">Heavy</h2>
+                    <div class="poem-meta">November 13, 2012 <span class="poem-time">• 12:01 AM</span></div>
+                    <p class="poem-body">I write with a heavy hand.
+                    I write so that you can feel my sorrows inscribed into bumps and texture on the pages of this notebook.
+                    I write so that when you read these lines, you'll know that each and every one belongs to you.
+                    My voice, my heavy heart, and every other part of me belongs to you because you are who I signed them away to.
+                    Packed in a suitcase labeled "Things that don't matter", you never considered taking my hand, nor my pen and for that I thank you.
+                    Maybe you don't care, maybe this was unintentional
+                    But you left me with enough ink to write down my sorrow and enough sorrow to rid me of ink.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-stolen" data-date="2012-11-15-00:00">
+                    <h2 class="poem-title">Stolen</h2>
+                    <div class="poem-meta">November 15, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">It was all those times when you felt words unnecessary that I really wanted to talk.
+                    But it seems when I kissed you, your tongue stole every vocabulary word from my mental dictionary and I was left without word.
+                    It's almost like how you left me, without word.
+                    This time you let me keep everything I wanted to say, but you somehow had each word shackled in a prison deep in my subconscious that the only way I could reach them is if I was unconscious
+                    and that wouldn't do any good.
+                    I've become a prisoner too. A prisoner locked away behind my words.
+                    My own words are choking me and forcing me to spit up the wrong syllables 
+                    or perhaps they're helping me 
+                    or perhaps they are longing for the stole
+                    as I am longing for you.
+                    My words my be crying for their syllables to return
+                    but they know all you'll give back is silly bull that doesn't taste as sweet as the first words did.
+                    We both know that, yet we will wait for you to leave your cruelty on our lips.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-blank" data-date="2012-11-18-00:00">
+                    <h2 class="poem-title">Blank</h2>
+                    <div class="poem-meta">November 18, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">This page is no longer blank. 
+                    Neither is my heart, nor my mind.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-you-revised" data-date="2012-11-19-00:05">
+                    <h2 class="poem-title">You (Revised)</h2>
+                    <div class="poem-meta">November 19, 2012 <span class="poem-time">• 12:05 AM</span></div>
+                    <p class="poem-body">I was about to go inside until you stumbled outside and graced us with your existence. Your presence sent these weird sensations through me so that when I see you all I can do is bask in the fact that you are there at that moment and soak up as much as I can because I know you'll leave again.
+                    
+                    I'll have to carry on with living
+
+                    For the first five seconds after your departure, I cannot begin to process clearly. My mind falls blank and empty. 
+                    
+                    Out of thin air, everything I wanted to say to you returns. I get lost in you, and it's only when you're not around that I can find my way out.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-lie" data-date="2012-11-19-00:01">
+                    <h2 class="poem-title">Lie</h2>
+                    <div class="poem-meta">November 19, 2012 <span class="poem-time">• 12:01 AM</span></div>
+                    <p class="poem-body">I cannot lie next to you without wanting to kiss you. 
+                    I cannot stand next to you without wanting to touch you or feel you in some way. 
+                    I cannot speak to you without wanting to absorb the melodies that are your voice.
+                    I cannot think of you without worrying that you've found something better and something that will please you much more than I ever could.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-living" data-date="2012-11-19-00:10">
+                    <h2 class="poem-title">Living</h2>
+                    <div class="poem-meta">November 19, 2012 <span class="poem-time">• 12:10 AM</span></div>
+                    <p class="poem-body">Sometiems I get so lost in my thoughts that I forget where I am. And once I snap back to reality, I look around, bewildered because I simply got so lost in the thought of living.
+                    What a wonder filled thing that is.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-enjoy" data-date="2012-11-21-00:00">
+                    <h2 class="poem-title">Enjoy</h2>
+                    <div class="poem-meta">November 21, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">Very seldom do we stop to enjoy things. We always rush through life. It's like running a race to death and I want to walk, I want to enjoy every feeling and every sound.
+                    
+                    Becase I will never feel it how I felt it then.
+                    The only thing that is constant is change and I can assure you that the change is only making things better.
+
+                    Instead of rushing, lets sit and enjoy morning or soak up the silence of a bubble bath. Enjoy eerything for what it is because it will never be what it was in the moment again.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-confusing" data-date="2012-11-22-00:00">
+                    <h2 class="poem-title">Confusing</h2>
+                    <div class="poem-meta">November 22, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">Your kisses are not wine. For time only made them bitter.
+                    
+                    Each one brands a new lie onto my heart causing me new pain.
+                    But out of love, blinded by love, I stay and hold back every feeling I ever had because telling you what control you have on me would be a mistake.
+
+                    "This is stupid."
+
+                    I say as you look at me with those hypontizeyes. Your gaze changes my initial thought and the DELTA-H of our exchange was enough to change the world.
+                    </p>
+                </article>                
+                
+                <article class="poem" id="poem-affair" data-date="2012-11-23-00:00">
+                    <h2 class="poem-title">Affair</h2>
+                    <div class="poem-meta">November 23, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">I wonder if you can taste the bitter, envious words left on my lips. I was indirectly asked to transfer them to you by the boy I gave my heart to.
+
+                    I wonder if you care enough to feel the unfaithful scars left on my skin by the fingers who have touched me all the ways I let you touch me first.
+
+                    The one who is the most involved knows the least and that isn't fair, but all forms of fairness do not matter at this point. With beetrayal already amoung us, we can do nothing but accept her.
+
+                    You're so oblivious to me that it doesn't matter anyway. 
+
+                    I understand why people cheat now and it's not because they are unhappy, but because they've found pieces they have been searching for in someone else and they just want a taste.
+
+                    Or they always had everything they wanted but they needed something else when what they wanted wasn't enough.
+
+                    But what is enough?
+
+                    We are human and we will never be satisfied.
+                    </p>
+                </article>                 
+
+                <article class="poem" id="poem-strike" data-date="2012-11-24-00:00">
+                    <h2 class="poem-title">Strike</h2>
+                    <div class="poem-meta">November 24, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">The silence of our empty college campus reminds me of how you make me feel.
+
+                    Empty.
+                    Cold.
+
+                    However, it's seven and I am fine with it because that's how your bedroom will be when I'm no longer a regular visitor.
+
+                    <strike>Your next will never be as lively as me and her smile will not light up the entire room nor will her laugh bring any happiness to anyone but you. I have captured your best friend's heart and forever, I will hold it. The keeper is always the one who is favored among all and not just one.</strike>
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-explore" data-date="2012-11-25-00:00">
+                    <h2 class="poem-title">Explore</h2>
+                    <div class="poem-meta">November 25, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">They tell you to experiment and sexually explore.
+                    But the more I do and think about, the more I realize I don't like you anymore.
+                    </p>
+                </article>        
+                
+                <article class="poem" id="poem-liar" data-date="2012-11-26-00:05">
+                    <h2 class="poem-title">Liar</h2>
+                    <div class="poem-meta">November 26, 2012 <span class="poem-time">• 12:05 AM</span></div>
+                    <p class="poem-body">All I taste is infidelity on your lips and you can't even look me in the eyes and be up front about your actions.
+                    
+                    Coward.
+
+                    You can't even face the truth, and had you actually taken the time to engage my mind, you would know I don't care.
+                    </p>
+                </article>
+                
+                <article class="poem" id="poem-skin" data-date="2012-12-09-00:10">
+                    <h2 class="poem-title">Skin</h2>
+                    <div class="poem-meta">December 9, 2012 <span class="poem-time">• 12:10 AM</span></div>
+                    <p class="poem-body">I wrote a poem for a boy on the layers of my skin.
+
+                    I only had the surface area of my body so I wrote really thin.
+                    </p>
+                </article> 
+                
+                <article class="poem" id="poem-walk" data-date="2012-12-09-00:15">
+                    <h2 class="poem-title">walk</h2>
+                    <div class="poem-meta">December 9, 2012 <span class="poem-time">• 12:15 AM</span></div>
+                    <p class="poem-body">I never gave you much of me because I never had much to give.
+
+                    I walk around with a heavy heart and no worth to live.
+                    </p>
+                </article>
+                
+                <article class="poem" id="poem-dinner" data-date="2012-12-03-00:00">
+                    <h2 class="poem-title">Dinner</h2>
+                    <div class="poem-meta">December 3, 2012 <span class="poem-time">• 12:00 AM</span></div>
+                    <p class="poem-body">And with the look in her eyes, we knew that if we weren't there, dinner wouldn't be the only thing done on the table.
+                    </p>
+                </article>   
+                
+                <article class="poem" id="poem-stumble" data-date="2012-12-03-00:01">
+                    <h2 class="poem-title">stumble</h2>
+                    <div class="poem-meta">December 3, 2012 <span class="poem-time">• 12:01 AM</span></div>
+                    <p class="poem-body"><i>Unkown Date</i>
+                    
+                    I'm not one for the relationships, but I need to stumble into one. And preferably one of my own.
+                    </p>
+                </article>                   
+
             </div>
         </main>
 
@@ -438,32 +866,35 @@ body {
         <p>&copy; 2026 - Archive. Handcrafted with care. Read with cringe.</p>
     </footer>
 
-    <script>
-        // Generates the entire TOC layout from scratch using the container's articles
-        function generateTOC() {
-            const tocList = document.getElementById('toc-list');
+<script>
+        // Triggered when clicking the "Show All" button manually
+        function handleShowAll() {
+            const poems = document.querySelectorAll('#poems-container .poem');
+            poems.forEach(poem => {
+                poem.style.display = 'block';
+            });
+
+            // Highlight the "Show All" button to show it's active
+            const showAllBtn = document.getElementById('show-all-btn');
+            if (showAllBtn) showAllBtn.classList.add('active');
+        }
+
+        // Single View UI Toggles
+        function showSinglePoem(selectedPoemId) {
             const poems = document.querySelectorAll('#poems-container .poem');
             
-            // Clear out any old temporary elements
-            tocList.innerHTML = '';
-
             poems.forEach(poem => {
-                const id = poem.getAttribute('id');
-                const dateAttr = poem.getAttribute('data-date');
-                const titleText = poem.querySelector('.poem-title').textContent;
-
-                // Create link elements programmatically 
-                const li = document.createElement('li');
-                li.setAttribute('data-date', dateAttr);
-
-                const anchor = document.createElement('a');
-                anchor.setAttribute('href', `#${id}`);
-                anchor.textContent = titleText; // Pulls title string dynamically with no trailing dates
-
-                li.appendChild(anchor);
-                tocList.appendChild(li);
+                if (poem.id === selectedPoemId) {
+                    poem.style.display = 'block'; 
+                } else {
+                    poem.style.display = 'none'; 
+                }
             });
-        }
+
+            // Turn off the "Show All" button styling because we are looking at a single poem
+            const showAllBtn = document.getElementById('show-all-btn');
+            if (showAllBtn) showAllBtn.classList.remove('active');
+        }        
 
         // Shared array sorting execution function
         function sortArchive(order) {
@@ -484,12 +915,54 @@ body {
 
             document.getElementById('sort-newest').classList.toggle('active', order === 'newest');
             document.getElementById('sort-oldest').classList.toggle('active', order === 'oldest');
+
+            // Automatically reveal all poems and highlight the show all button when sorting changes
+            handleShowAll();
         }
 
-        // Bootstraps generation and default sorting behaviors when DOM is active
+        // Generates the entire TOC layout from scratch using the container's articles
+        function generateTOC() {
+            const tocList = document.getElementById('toc-list');
+            const poems = document.querySelectorAll('#poems-container .poem');
+            
+            tocList.innerHTML = '';
+
+            poems.forEach(poem => {
+                const id = poem.getAttribute('id');
+                const dateAttr = poem.getAttribute('data-date');
+                
+                // Find the title element safely
+                const titleEl = poem.querySelector('.poem-title') || poem.querySelector('h2');
+                const titleText = titleEl ? titleEl.textContent : "Untitled Poem";
+
+                const li = document.createElement('li');
+                li.setAttribute('data-date', dateAttr);
+
+                const anchor = document.createElement('a');
+                anchor.setAttribute('href', `#${id}`);
+                anchor.textContent = titleText;
+
+                li.appendChild(anchor);
+                tocList.appendChild(li);
+            });
+        }
+
+        // Bootstraps generation, static event bindings, and default layouts when DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
             generateTOC();
             sortArchive('newest'); // Automatically ensures it displays newest first initially
+
+            // Single execution binding for the click interceptor
+            document.getElementById('toc-list').addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault(); 
+                    const poemId = e.target.getAttribute('href').substring(1);
+                    showSinglePoem(poemId);
+                    
+                    // Smooth scroll the single poem up into view nicely
+                    document.getElementById(poemId).scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
     </script>
 </body>
