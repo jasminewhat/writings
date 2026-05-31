@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Poetry Archive</title>
+    <style>
+/* Global Styles & Color Palette (Creamsicle Dreamsicle Blend) */
+body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffdcb5; /* Dreamsicle - Soft, warm pastel orange backdrop */
+            color: #5e3311;            /* Warm Espresso - Deep orange-brown ink for perfect blend and contrast */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth; 
+        }
+
+        /* Layout Wrapper */
+        .page-wrapper {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            max-width: 700px;
+            margin-bottom: 100px;
+        }
+
+        /* Header / Introduction */
+        header {
+            margin: 60px auto 40px auto;
+            text-align: left;
+        }
+
+        header h1 {
+            font-family: "Georgia", serif; 
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            color: #e06c26; /* Bright Creamsicle Orange */
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #8f5c35; /* Faded terracotta */
+            font-style: italic;
+            margin: 0;
+        }
+
+        hr {
+            border: 0;
+            border-top: 3px solid #e06c26; /* Creamsicle accent line */
+            margin: 40px 0;
+            max-width: 100px;
+        }
+
+        /* Table of Contents Sidebar */
+        .toc-sidebar {
+            width: 240px;
+            position: sticky;
+            top: 40px; 
+            /* Calculates the max height based on the screen view, leaving room for spacing */
+            max-height: calc(100vh - 100px); 
+            overflow-y: auto; /* Adds a vertical scrollbar automatically if the list gets too long */
+            margin-top: 65px;
+            margin-right: 60px;
+            padding-right: 20px;
+            border-right: 2px solid #e6c19a; 
+            
+            /* Optional: Hides the default bulky scrollbar track for a cleaner aesthetic */
+            scrollbar-width: thin;
+            scrollbar-color: #e06c26 transparent;
+        }
+        .toc-header-wrapper {
+            margin-bottom: 15px;
+        }
+
+        .toc-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #e06c26;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        /* Sort Controls */
+        .sort-controls {
+            font-size: 0.8rem;
+            color: #8f5c35;
+        }
+
+        .sort-btn {
+            background: none;
+            border: none;
+            color: #bd5c20; /* Darker orange for readable links */
+            cursor: pointer;
+            padding: 0 2px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+
+        .sort-btn.active {
+            font-weight: bold;
+            color: #5e3311; /* Active state drops into the deepest text color */
+            text-decoration: none;
+            cursor: default;
+        }
+
+        .toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toc-sidebar li {
+            margin-bottom: 16px;
+        }
+
+        .toc-sidebar a {
+            color: #bd5c20; 
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .toc-sidebar a:hover {
+            color: #5e3311;
+            text-decoration: underline;
+        }
+
+        /* Individual Poem Style (Whipped Creamsicle Paper) */
+        .poem {
+            margin-bottom: 80px;
+            /* Layered soft orange-cream glow over a rich whipped cream white */
+            background: 
+                linear-gradient(135deg, rgba(255, 246, 235, 0.5) 0%, rgba(0,0,0,0) 100%),
+                #fffaf2; /* Soft whipped cream white */
+            padding: 40px;
+            border-radius: 8px; 
+            box-shadow: 
+                inset 0 0 30px rgba(255, 220, 181, 0.2), /* Subtle inner orange glow */
+                0 12px 28px rgba(94, 51, 17, 0.06);     /* Ultra-soft blended shadow */
+            border: 2px solid #ffffff;
+            scroll-margin-top: 40px; 
+        }
+
+        .poem-title {
+            font-family: "Georgia", serif;
+            font-size: 1.7rem;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #5e3311; /* Warm dark brown-orange ink */
+        }
+
+        .poem-meta {
+            font-size: 0.85rem;
+            color: #e06c26; /* Bright creamsicle orange for date tags */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .poem-body {
+            font-family: "Georgia", serif;
+            font-size: 1.2rem;
+            white-space: pre-line; 
+            color: #5e3311; 
+            padding-left: 15px;
+            border-left: 3px solid #ffca91; /* Warm cream margin bar */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+            color: #8f5c35;
+            border-top: 2px solid #e6c19a;
+            background-color: #f7ce9f; /* Smooth, darker blended bottom base */
+        }
+
+        /* Responsive Design for Mobile Devices */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                flex-direction: column;
+            }
+
+            .toc-sidebar {
+                width: 100%;
+                position: static;
+                margin: 20px 0 40px 0;
+                padding: 20px;
+                background: #f7ce9f;
+                border-right: none;
+                border-radius: 6px;
+                box-sizing: border-box;
+            }
+
+            header {
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        
+        <nav class="toc-sidebar">
+            <div class="toc-header-wrapper">
+                <div class="toc-title">Index of Poems</div>
+                <div class="sort-controls">
+                    Sort: 
+                    <button class="sort-btn active" id="sort-newest" onclick="sortArchive('newest')">Newest</button> | 
+                    <button class="sort-btn" id="sort-oldest" onclick="sortArchive('oldest')">Oldest</button>
+                </div>
+            </div>
+            <!-- The list items below are generated completely automatically on page load -->
+            <ul id="toc-list"></ul>
+        </nav>
+
+        <main>
+            <header>
+                <h1>What?</h1>
+                <p>A way to remember the moments you wanted to forget.</p>
+                <hr>
+            </header>
+
+            <div class="poems-list" id="poems-container">
+
+                <!-- 
+                  TO ADD A NEW POEM: 
+                  Just copy/paste an <article> block below. 
+                  Make sure the 'id' is unique and 'data-date' uses the YYYY-MM-DD format.
+                  If multiple poems have the same date, add a suffix like -1, -2 to keep your preferred order.
+                -->
+
+                <article class="poem" id="poem-6" data-date="2017-12-25">
+                    <h2 class="poem-title">Granite</h2>
+                    <div class="poem-meta">December 25, 2017</div>
+                    <p class="poem-body">Granted, you are taken for. 
+                    But you've been granted, nothing more.</p>
+                </article>
+
+                <article class="poem" id="poem-5" data-date="2015-04-11">
+                    <h2 class="poem-title">Legalize</h2>
+                    <div class="poem-meta">April 11, 2015</div>
+                    <p class="poem-body">Everything is legal.
+ 
+                    What is believed to be the most powerful thing? Ego. 
+                    What does one actually own? Nothing but his ego.</p>
+                </article>
+
+                <article class="poem" id="poem-1" data-date="2014-05-12-1">
+                    <h2 class="poem-title">Sail (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">i left this morning without word.
+                    i left as quietly as i could, without a sound being heard.
+                    you looked so peaceful as you slept in your bed.
+                    since i'm writing this, 
+                    you must be running through my head.
+                    
+                    i wonder what you dream, and i wonder what you think.
+                    its been a week now that this boat is still sailing.
+                    will it sink?
+                    no treacherous winds, but there are pirates among.
+                    i'll just keep to myself so i don't get hung.</p>
+                </article>
+
+                <article class="poem" id="poem-2" data-date="2014-05-12-2">
+                    <h2 class="poem-title">Swim (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">You were a pool of water. I stepped my foot in to feel the temp and felt my entire body rush with a sensation I longed to get again. 
+                    
+                    I took another step into the dark waters and fell over and into you. Instead of drying off, I sat paddling to stay afloat. You've nearly drown me in your current. Each time, I forgave you and I continued my swim. 
+                    
+                    As my body soaked up all of you, I pruned and I could not release myself from you. I craved you. For even when you dried up, you were still with me. 
+                    
+                    Even as other rains have passed over, they never stayed long because they knew I could soak up no other waters. 
+                    
+                    Instead of drying off and trying a different pool who could span so much wider than you, I was content with you.</p>
+                </article>
+
+                <article class="poem" id="poem-3" data-date="2014-05-12-3">
+                    <h2 class="poem-title">Lust (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">turn on a movie, you know what that means.
+                    volume up, lay down, loosen up jeans.
+                    relax now, keep your mind on the prize.
+                    we'll be done before the movie is over, just close your eyes.
+                    
+                    your body's so sexy, its got me feeling right.
+                    i can already bet you'll be spending the night.
+                    the moment gets hot and the breathing gets heavy.
+                    i want you's thrown around.
+                    pulling off clothes like the pulls of a chevy.
+                    
+                    panties on the ground and my shorts are gone.
+                    you got me wetter than ive ever been, the suspense has been drawn.
+                    as you make your way down, my selfishness kicks in.
+                    i can't touch you, but you touched me.
+                    now your tongue slides in.
+                    
+                    i feel my back arch and my tingling spine.
+                    you come up and kiss me, and baby you're mine.
+                    one kiss on the lips, now its all done.
+                    you're inside now, the teasing was fun.</p>
+                </article>
+
+                <article class="poem" id="poem-4" data-date="2014-05-12-4">
+                    <h2 class="poem-title">BFF</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">If you can fall in love with your best friend, then believe me, I did.
+                        If their heart was up for auction, I'd be the highest bid.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-7" data-date="2014-05-12-7">
+                    <h2 class="poem-title">Shine (Revised)</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">i was myself, nothing less when you're around.
+                        you were my pick me up when all those people kicked me to the ground. 
+                        hugging you would remove every bit of gloom. 
+                        we were so close improvement had no room. 
+                        perfect is all you were and all you could be. 
+                        your smile was the brightest thing my rainy days longed to see. 
+                        life isn't bad because i know you're near.
+                        a text or a call. your voice. my favorite thing to hear. 
+                        you say my name like a vocalist sings a song.
+                        as long as i have your love nothing can go wrong.
+                    </p>
+                </article>
+
+                <article class="poem" id="poem-8" data-date="2014-05-12-8">
+                    <h2 class="poem-title">Vixen</h2>
+                    <div class="poem-meta">May 12, 2014</div>
+                    <p class="poem-body">she's a vixen. its the look in her eyes. 
+                        the way the light hits it, she'll have you hypnotized. 
+                        she's the devil, in that red dress she's in. 
+                        touch her body once, she'll have you committing every sin. 
+                        she's a murderer. the way she kills your heart. 
+                        you'll want to bury yourself cause from her you can't seem to part. 
+                        she's an angel. her soft voice is oh so sweet. 
+                        you'll be entranced from the day you meet. 
+                        how can evil be so good? 
+                        she just sits on your bed with all intentions misunderstood. 
+                        you don't realize, she's done all she could, 
+                        to get herself to this position doing things she'd imagined she never would.
+                    </p>
+                </article>
+
+            </div>
+        </main>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Archive. Handcrafted with care. Read with cringe.</p>
+    </footer>
+
+    <script>
+        // Generates the entire TOC layout from scratch using the container's articles
+        function generateTOC() {
+            const tocList = document.getElementById('toc-list');
+            const poems = document.querySelectorAll('#poems-container .poem');
+            
+            // Clear out any old temporary elements
+            tocList.innerHTML = '';
+
+            poems.forEach(poem => {
+                const id = poem.getAttribute('id');
+                const dateAttr = poem.getAttribute('data-date');
+                const titleText = poem.querySelector('.poem-title').textContent;
+
+                // Create link elements programmatically 
+                const li = document.createElement('li');
+                li.setAttribute('data-date', dateAttr);
+
+                const anchor = document.createElement('a');
+                anchor.setAttribute('href', `#${id}`);
+                anchor.textContent = titleText; // Pulls title string dynamically with no trailing dates
+
+                li.appendChild(anchor);
+                tocList.appendChild(li);
+            });
+        }
+
+        // Shared array sorting execution function
+        function sortArchive(order) {
+            const tocList = document.getElementById('toc-list');
+            const poemsContainer = document.getElementById('poems-container');
+            
+            const tocItems = Array.from(tocList.getElementsByTagName('li'));
+            const poemItems = Array.from(poemsContainer.getElementsByClassName('poem'));
+
+            const sortFunction = (a, b) => {
+                const strA = a.getAttribute('data-date');
+                const strB = b.getAttribute('data-date');
+                return order === 'newest' ? strB.localeCompare(strA) : strA.localeCompare(strB);
+            };
+
+            tocItems.sort(sortFunction).forEach(item => tocList.appendChild(item));
+            poemItems.sort(sortFunction).forEach(item => poemsContainer.appendChild(item));
+
+            document.getElementById('sort-newest').classList.toggle('active', order === 'newest');
+            document.getElementById('sort-oldest').classList.toggle('active', order === 'oldest');
+        }
+
+        // Bootstraps generation and default sorting behaviors when DOM is active
+        document.addEventListener('DOMContentLoaded', () => {
+            generateTOC();
+            sortArchive('newest'); // Automatically ensures it displays newest first initially
+        });
+    </script>
+</body>
+</html>
